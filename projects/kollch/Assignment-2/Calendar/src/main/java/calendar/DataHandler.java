@@ -126,10 +126,10 @@ public class DataHandler {
      *  given values are invalid, or if date 2 is not after date 1.
      **/
     public List<CalDay> getApptRange(GregorianCalendar firstDay, 
-            GregorianCalendar lastDay) throws DateOutOfRangeException {
+            GregorianCalendar lastDay, boolean diagnose) throws DateOutOfRangeException {
 
-            //Internal Diagnositic Messages turned on when true
-            boolean diagnose = false;
+            //Internal Diagnostic Messages turned on when true
+            //boolean diagnose = true;
             
             //If the data handler isn't initialized return null
             if (isValid() == false) {
@@ -232,7 +232,7 @@ public class DataHandler {
                 }
                 //Figure out which days the appointment occurs on
                 LinkedList<GregorianCalendar>  apptOccursOnDays = 
-                    getApptOccurences(appt, firstDay, lastDay);
+                    getApptOccurrences(appt, firstDay, lastDay);
                 
                 if (diagnose) { 
                     System.out.println("This appointment occurs on: ");
@@ -276,8 +276,8 @@ public class DataHandler {
      * occurs. The days are guaranteed to be between firstDay (inclusive) and
      * lastDay (exclusive). They are guaranteed to be in order.
      **/
-    private static LinkedList<GregorianCalendar> getApptOccurences(Appt appt, 
-        GregorianCalendar firstDay, GregorianCalendar lastDay) {
+    private static LinkedList<GregorianCalendar> getApptOccurrences(Appt appt,
+                                                                    GregorianCalendar firstDay, GregorianCalendar lastDay) {
         
         LinkedList<GregorianCalendar> result = new LinkedList<GregorianCalendar>();
         

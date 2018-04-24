@@ -161,14 +161,14 @@ public class CalendarMain {
  	        //Create a linked list of calendar days to return
  	        LinkedList<CalDay> calDays = new LinkedList<CalDay>();
 
- 			calDays = (LinkedList<CalDay>) dataHandler.getApptRange(today,tomorrow);	
+ 			calDays = (LinkedList<CalDay>) dataHandler.getApptRange(today,tomorrow, false);
 
 			System.out.println("The number of appointments between "+ dateFormat.format(today.getTime()) +" (inclusive) and " + dateFormat.format(tomorrow.getTime()) +  " (exclusive) ");
 			for (int i = 0; i < calDays.size(); i++){
 				
 				CalDay calday= calDays.get(i);
 				
-				String str= calday.getFullInfomrationApp(calday);
+				String str= calday.getFullInformationApp(calday);
 				System.out.println(str);
 
 				LinkedList<Appt>  appts =calDays.get(i).getAppts();

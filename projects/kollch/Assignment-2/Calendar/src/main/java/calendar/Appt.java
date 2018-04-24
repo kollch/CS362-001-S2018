@@ -369,7 +369,7 @@ public class Appt {
      * @return True if this appointment has a time set. Otherwise false.
      */
     public boolean hasTimeSet() {
-        return (getStartHour() == NO_TIME);
+        return (getStartHour() != NO_TIME);
     }
 
     /**
@@ -477,7 +477,7 @@ public class Appt {
         if (!getValid()) {
             System.err.println("\tThis appointment is not valid");
         }
-        String day = this.getStartMonth() + "/" + this.getStartDay() + "/" + this.getStartYear() + " at ";
+        String day = this.getStartMonth() + 1 + "/" + this.getStartDay() + "/" + this.getStartYear() + " at ";
         return "\t" + day + this.representationApp() + " ," + getTitle() + ", " + getDescription() + "\n";
     }
 

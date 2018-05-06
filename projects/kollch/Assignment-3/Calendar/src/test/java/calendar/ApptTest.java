@@ -91,7 +91,7 @@ public class ApptTest
         appt.setStartMonth(11);
         appt.setValid();
         assertFalse(appt.getValid());
-        appt.setStartMonth(3);
+        appt.setStartMonth(2);
         appt.setStartDay(29);
         appt.setValid();
         assertFalse(appt.getValid());

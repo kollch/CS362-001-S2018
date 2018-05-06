@@ -58,14 +58,13 @@ public class DataHandlerTest
         GregorianCalendar day2 = new GregorianCalendar(2017, 2, 2);
         boolean exceptionCaught = false;
         try {
-            List<CalDay> caldays = datahandler.getApptRange(day2, day1, true);
+            List<CalDay> caldays = datahandler.getApptRange(day2, day1);
         } catch (DateOutOfRangeException e) {
             exceptionCaught = true;
         }
         assertTrue(exceptionCaught);
-        List<CalDay> emptycaldays = datahandler.getApptRange(day1, day2, false);
-        assertEquals("\t --- 3/1/1970 --- \n --- -------- Appointments ------------ --- \n\n", emptycaldays.get(0).toString());
-        //Appt appt1 = new Appt(15, 30, 9, 10, 2015, "Title", "Description", "xyz@gmail.com");
+        List<CalDay> emptycaldays1 = datahandler.getApptRange(day1, day2);
+        assertEquals("\t --- 2/1/1970 --- \n --- -------- Appointments ------------ --- \n\n", emptycaldays1.get(0).toString());
         //datahandler.saveAppt(appt1);
         //Appt appt2 = new Appt(15, 0, 9, 10, 2015, "Title2", "Description2", "xyz@gmail.com");
         //datahandler.saveAppt(appt2);
@@ -90,7 +89,7 @@ public class DataHandlerTest
         datahandler.saveAppt(appt3);
         Appt appt4 = new Appt(17, 0, 29, 10, 2016, "Title4", "Description4", "xyz@gmail.com");
         datahandler.saveAppt(appt4);
-        datahandler.getApptRange(day1, day2, true);
+        datahandler.getApptRange(day1, day2);
     }
 
     @Test
@@ -115,5 +114,6 @@ public class DataHandlerTest
 
         //Files.setPosixFilePermissions(Paths.get(System.getProperty("user.dir") + System.getProperty("file.separator") + "calendar.xml"), perms);
         DataHandler datahandler3 = new DataHandler("calendar.xml", false);
+        DataHandler datahandler4 = new DataHandler("src", true);
     }
 }

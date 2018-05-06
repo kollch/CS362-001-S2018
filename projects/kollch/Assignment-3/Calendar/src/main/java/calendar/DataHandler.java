@@ -126,10 +126,10 @@ public class DataHandler {
      *  given values are invalid, or if date 2 is not after date 1.
      **/
     public List<CalDay> getApptRange(GregorianCalendar firstDay, 
-            GregorianCalendar lastDay, boolean diagnose) throws DateOutOfRangeException {
+            GregorianCalendar lastDay) throws DateOutOfRangeException {
 
-            //Internal Diagnostic Messages turned on when true
-            //boolean diagnose = true;
+            //Internal Diagnositic Messages turned on when true
+            //boolean diagnose = false;
             
             //If the data handler isn't initialized return null
             if (isValid() == false) {
@@ -151,52 +151,55 @@ public class DataHandler {
                 calDays.add(new CalDay(nextDay));
                 nextDay.add(nextDay.DAY_OF_MONTH, 1);
             }
-            
+            /*
             if (diagnose) {
                 System.out.println("=======================================");
                 System.out.println("DEBUGGING GETTING OF APPOINTMENTS      ");
-            }
+            } */
             
             //Retrieve the root node - <calendar>
             Document doc = getDocument();
             Element root = doc.getDocumentElement();
-            
+            /*
             if (diagnose) {
                 System.out.println("Root node: " + root.getTagName());
                 System.out.println("All following nodes should be appt nodes.");
-            }
+            } */
             
             //Retrieve the root's children - <appt> nodes
             NodeList appts = root.getChildNodes();
             for (int i = 0; i < appts.getLength(); i++) {
                 Element currentAppt = (Element) appts.item(i);
-                
+                /*
                 if (diagnose) {
                     System.out.println("Nodes under the root: " + 
                         currentAppt.getTagName());
-                }
+                } */
                 
                 //For this appointment, get the values of all fields
                 NodeList fieldNodes = currentAppt.getChildNodes();
                 Hashtable<String, String> fields = new Hashtable<String, String>();
+                /*
                 if (diagnose) {
                     System.out.println("Preparing to read each field for the appt");
-                }
+                } */
                 for (int j = 0; j < fieldNodes.getLength(); j++) {
                     Element currentField = (Element) fieldNodes.item(j);
                     String fieldName = currentField.getTagName();
+                    /*
                     if (diagnose) {
                         System.out.println("Reading field: " + fieldName);
-                    }
+                    } */
                     String fieldValue = "";
                     NodeList fieldValueNodes = currentField.getChildNodes();
                     for (int k = 0; k < fieldValueNodes.getLength(); k++) {
                         Text text = (Text)fieldValueNodes.item(k);
                         fieldValue += text.getData();
                     }
+                    /*
                     if (diagnose) {
                         System.out.println("Reading field's value: " + fieldValue);
-                    }
+                    } */
                     
                     fields.put(fieldName, fieldValue);
                 }
@@ -226,17 +229,17 @@ public class DataHandler {
                             Integer.parseInt((String)fields.get("recurIncrement")),
                             Integer.parseInt((String)fields.get("recurNumber")));
                 //**When changing these later, remember to check for NULL ***/
-                
+                /*
                 if (diagnose) {
                     System.out.println("Calculating appointment occurrences.");
-                }
+                } */
                 //Figure out which days the appointment occurs on
                 LinkedList<GregorianCalendar>  apptOccursOnDays = 
-                    getApptOccurrences(appt, firstDay, lastDay);
-                
+                    getApptOccurences(appt, firstDay, lastDay);
+                /*
                 if (diagnose) { 
                     System.out.println("This appointment occurs on: ");
-                }
+                } */
                 
                 //For each day in the list, calculate the difference between the
                 //first day and the day of occurrence and add the appointment to 
@@ -246,10 +249,10 @@ public class DataHandler {
                 Iterator itr = apptOccursOnDays.iterator();
                 while (itr.hasNext()) {
                     GregorianCalendar apptOccursOn = (GregorianCalendar)itr.next();
-                    
+                    /*
                     if (diagnose) {
                         System.out.println("\t" + apptOccursOn);
-                    }
+                    } */
                     
                     while(nextDay.before(apptOccursOn)) {
                         daysDifference++;
@@ -260,11 +263,11 @@ public class DataHandler {
                     calDayOfAppt.addAppt(appt);
                             
                 }
-                
+                /*
                 //This appointment has been added to all CalDays
                 if (diagnose) {
                     System.out.println("This appointment is done.");
-                }
+                } */
             } //for nodelist
             return calDays;
         }
@@ -276,8 +279,8 @@ public class DataHandler {
      * occurs. The days are guaranteed to be between firstDay (inclusive) and
      * lastDay (exclusive). They are guaranteed to be in order.
      **/
-    private static LinkedList<GregorianCalendar> getApptOccurrences(Appt appt,
-                                                                    GregorianCalendar firstDay, GregorianCalendar lastDay) {
+    private static LinkedList<GregorianCalendar> getApptOccurences(Appt appt, 
+        GregorianCalendar firstDay, GregorianCalendar lastDay) {
         
         LinkedList<GregorianCalendar> result = new LinkedList<GregorianCalendar>();
         
@@ -351,14 +354,14 @@ public class DataHandler {
                 
                 //The user did specify weekly recurrence, so increment the
                 //day until it falls on a weekday the user specified
-                for (int k = 0; k < 7; k--) {
+                for (int k = 0; k < 7; k++) {
                     nextDay.add(nextDay.DAY_OF_MONTH, 1);
                     int newDayOfWeek = nextDay.get(nextDay.DAY_OF_WEEK);
                 
                     for (int i = 0; i < recurDays.length; i++) {
                         //If the calendar is set to a day of the week that the
                         //appt recurs on then return that day.
-                        if (recurDays[i] != newDayOfWeek) {
+                        if (recurDays[i] == newDayOfWeek) {
                             return nextDay;
                         }
                     }
